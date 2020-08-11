@@ -7,11 +7,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.example.tinderclone.R
+import com.example.tinderclone.util.DATA_USERS
+import com.example.tinderclone.util.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.android.synthetic.main.activity_login.passwordET as passwordET1
 
 class SignupActivity : AppCompatActivity() {
+
+    private val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
     private val firebaseAuth = FirebaseAuth.getInstance()//ref to the firebaseAuth service
     private val firebaseAuthListener =
@@ -44,14 +49,17 @@ class SignupActivity : AppCompatActivity() {
         if (!emailET.text.toString().isNullOrEmpty() && !passwordET.text.toString().isNullOrEmpty()) {
             //instruction to create the user
             //if this task completes successfully then startActivity takes you to the MainActivity
-            firebaseAuth.createUserWithEmailAndPassword(
-                emailET.text.toString(),
-                passwordET.text.toString()
-            ).addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Toast.makeText(this, "Signup error ${task.exception?.localizedMessage}", Toast.LENGTH_SHORT).show()
+            firebaseAuth.createUserWithEmailAndPassword(emailET.text.toString(), passwordET.text.toString())
+                .addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Toast.makeText(this, "Signup error ${task.exception?.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val email = emailET.text.toString()
+                        val userId = firebaseAuth.currentUser?.uid ?: ""//gets unique identifier or empty string
+                        val user = User(userId, "", "", email, "", "")
+                        firebaseDatabase.child(DATA_USERS).child(userId).setValue(user)
+                    }
                 }
-            }
         }
     }
 
