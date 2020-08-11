@@ -12,12 +12,16 @@ class StartupActivity : AppCompatActivity() {
 
     }
 
-    fun onLogin(v: View) {
 
+    //when this view is press start the activity that is LoginActivity with the intent
+    //provided here
+    fun onLogin(v: View) {
+        startActivity(LoginActivity.newIntent(this))
 
     }
 
     fun onSignup(v: View) {
+        startActivity(SignupActivity.newIntent(this))
 
     }
 
