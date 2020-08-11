@@ -12,7 +12,6 @@ import com.example.tinderclone.util.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_signup.*
-import kotlinx.android.synthetic.main.activity_login.passwordET as passwordET1
 
 class SignupActivity : AppCompatActivity() {
 
@@ -24,7 +23,7 @@ class SignupActivity : AppCompatActivity() {
             //check if the user exists
             val user = firebaseAuth.currentUser
             if (user != null) {
-                startActivity(MainActivity.newIntent(this))
+                startActivity(TinderActivity.newIntent(this))
                 finish()
             }
         }///this is basically called when the user created and authenticated
