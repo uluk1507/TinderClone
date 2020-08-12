@@ -6,6 +6,7 @@ interface TinderCallback {
 
     fun onSignout()
     fun ongGetUserId():String
-    fun getUserReference():DatabaseReference
+    fun getUserDatabase():DatabaseReference
+    fun profileComplete()
 
 }

@@ -27,6 +27,7 @@ class TinderActivity : AppCompatActivity(), TinderCallback {
     private val userId = firebaseAuth.currentUser?.uid
     private lateinit var userDatabase: DatabaseReference
 
+
     private var profileFragment: ProfileFragment? = null
     private var swipeFragment: SwipeFragment? = null
     private var matchesFragment: MatchesFragment? = null
@@ -123,5 +124,9 @@ class TinderActivity : AppCompatActivity(), TinderCallback {
 
     override fun ongGetUserId(): String = userId!!
 
-    override fun getUserReference(): DatabaseReference =userDatabase
+    override fun getUserDatabase(): DatabaseReference =userDatabase
+    override fun profileComplete() {
+        swipeTab?.select()
+    }
+
 }

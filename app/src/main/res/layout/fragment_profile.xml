@@ -179,7 +179,6 @@
         android:layout_height="match_parent"
         android:background="#aaaaaaaa"
         android:gravity="center"
-        android:visibility="gone"
         app:layout_anchor="@+id/nestedScrollView"
         app:layout_anchorGravity="center">
 

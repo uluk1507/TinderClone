@@ -55,7 +55,9 @@ class SignupActivity : AppCompatActivity() {
                     } else {
                         val email = emailET.text.toString()
                         val userId = firebaseAuth.currentUser?.uid ?: ""//gets unique identifier or empty string
-                        val user = User(userId, "", "", email, "", "")
+                        val user = User(userId,"", "", email,"","","")
+
+
                         firebaseDatabase.child(DATA_USERS).child(userId).setValue(user)
                     }
                 }
