@@ -13,11 +13,19 @@ import com.example.tinderclone.R
 import com.example.tinderclone.fragments.MatchesFragment
 import com.example.tinderclone.fragments.ProfileFragment
 import com.example.tinderclone.fragments.SwipeFragment
+import com.example.tinderclone.util.DATA_USERS
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.lorentzos.flingswipe.SwipeFlingAdapterView
 import kotlinx.android.synthetic.main.activity_main.*
 
-class TinderActivity : AppCompatActivity() {
+class TinderActivity : AppCompatActivity(), TinderCallback {
+
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val userId = firebaseAuth.currentUser?.uid
+    private lateinit var userDatabase: DatabaseReference
 
     private var profileFragment: ProfileFragment? = null
     private var swipeFragment: SwipeFragment? = null
@@ -30,6 +38,12 @@ class TinderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (userId.isNullOrEmpty()) {
+            onSignout()
+
+        }
+        userDatabase = FirebaseDatabase.getInstance().reference.child(DATA_USERS)
 
         profileTab = navigationTabs.newTab()
         swipeTab = navigationTabs.newTab()
@@ -58,6 +72,7 @@ class TinderActivity : AppCompatActivity() {
                     profileTab -> {
                         if (profileFragment == null) {
                             profileFragment = ProfileFragment()
+                            profileFragment!!.setCallback(this@TinderActivity)
                         }
                         replaceFragment(profileFragment!!)
 
@@ -65,6 +80,7 @@ class TinderActivity : AppCompatActivity() {
                     swipeTab -> {
                         if (swipeFragment == null) {
                             swipeFragment = SwipeFragment()
+                            profileFragment!!.setCallback(this@TinderActivity)
                         }
                         replaceFragment(swipeFragment!!)
 
@@ -72,6 +88,7 @@ class TinderActivity : AppCompatActivity() {
                     matchesTab -> {
                         if (matchesFragment == null) {
                             matchesFragment = MatchesFragment()
+                            profileFragment!!.setCallback(this@TinderActivity)
                         }
                         replaceFragment(matchesFragment!!)
 
@@ -96,4 +113,15 @@ class TinderActivity : AppCompatActivity() {
 
         fun newIntent(context: Context?) = Intent(context, TinderActivity::class.java)
     }
+
+    override fun onSignout() {
+        firebaseAuth.signOut()
+        startActivity(StartupActivity.newIntent(this))
+        finish()
+
+    }
+
+    override fun ongGetUserId(): String = userId!!
+
+    override fun getUserReference(): DatabaseReference =userDatabase
 }

@@ -24,6 +24,10 @@
         <item name="android:clickable">true</item>
 
     </style>
+    
+    <style name="StandardButtonGrey" parent="StandardButton">
+        <item name="android:background">@drawable/standard_button_rounded_grey</item>
+    </style>
 
 
 </resources>
